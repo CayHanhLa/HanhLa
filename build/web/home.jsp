@@ -36,12 +36,12 @@
                 <ol class="carousel-indicators">
                     <c:forEach var="p" items="${list3ProductTrending}" varStatus="status">
                         <li data-target="#heroSlider" data-slide-to="${status.index}" class="${status.first ? 'active' : ''}"></li>
-                        </c:forEach>
+                        <c:forEach>
                 </ol>
 
                 <!-- Slide nội dung -->
                 <div class="carousel-inner">
-                    <c:forEach var="p" items="${list3ProductTrending}" varStatus="status">
+                    <c:forEach var="p"items="${list3ProductTrending}"varStatus="status">
                         <div class="carousel-item ${status.first ? 'active' : ''}">
                             <div class="row no-gutters align-items-center pt-60px">
                                 <div class="col-5 d-none d-sm-block">
@@ -53,7 +53,7 @@
                                     <div class="hero-banner__content">
                                         <h4>${p.title}</h4>
                                         <h1>${p.briefInfor}</h1>
-                                        <p>${p.description}</p>
+                                        <p>${.description}</p>
                                         <a class="button button-hero" href="#">Buy Now</a>
                                     </div>
                                 </div>
@@ -83,7 +83,7 @@
                             <img src="${p.thumbnail}" alt="image" class="img-fluid">
                             <a href="#" class="hero-carousel__slideOverlay">
                                 <h3>${p.title}</h3>
-                                <p>${p.brandName}</p>
+                                <p>${.brandName}</p>
                             </a>
                         </div>
                     </c:forEach>
