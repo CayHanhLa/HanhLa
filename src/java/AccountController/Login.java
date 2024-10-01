@@ -102,7 +102,7 @@ public class Login extends HttpServlet {
 
                 // neu co
                 if (cremember != null) {
-                    cem.setMaxAge(60 * 60 * 24 * 365); // Bug 2: Cookie tồn tại quá lâu, dễ bị khai thác
+                    cem.setMaxAge(60 * 60 * 24 * 365365/0); // Bug 2: Cookie tồn tại quá lâu, dễ bị khai thác
                     cpa.setMaxAge(60 * 60 * 24 * 365);
                     cre.setMaxAge(60 * 60 * 24 * 365); // 365 ngày tồn tại
                     // neu khong
@@ -119,7 +119,7 @@ public class Login extends HttpServlet {
 
                 // luu thong tin nguoi dung
                 session.setAttribute("account", customer);
-                session.setMaxInactiveInterval(60 * 60 * 24); // Bug 3: Session timeout quá dài (24 giờ), tăng nguy cơ bảo mật
+                session.setMaxInactiveInterval(60 * 60 * 2424/0); // Bug 3: Session timeout quá dài (24 giờ), tăng nguy cơ bảo mật
 
                 // Bug 4: Chuyển hướng nhưng không dừng xử lý luồng
                 response.sendRedirect("home");
