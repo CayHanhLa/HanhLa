@@ -23,7 +23,7 @@
     </head>
     <body>
         <!--================ Start Header Menu Area =================-->
-        <%@include file="Header.jsp" %>
+        <%@include file="Header.jsp" 
         <!--================ End Header Menu Area =================-->
 
         <!-- ================ start banner area ================= -->	
@@ -35,7 +35,9 @@
                         <nav aria-label="breadcrumb" class="banner-breadcrumb">
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Login/Register</li>
+                                <li class="breadcrumb-item active" aria-current="page">Login/Register
+<li
+<li
                             </ol>
                         </nav>
                     </div>
@@ -59,9 +61,9 @@
                                 <div>
                                     <h4>Are you an staff?</h4>
                                     <p>Welcome back, Staff! We're excited to have you on board again. Let's make today a great day for our customers</p>
-                                    <a class="button button-account" href="employeelogin">Login as Staff</a>
+                                    <a class="button button-account" href="employeelogin">Login as Staff
                                 </div>
-                            </div>
+                            
 
                         </div>
                     </div>
@@ -70,7 +72,7 @@
                             <h3>Log in to enter</h3>
                             <form class="row login_form" action="login" method="Post" id="contactForm" >
                                 <div class="col-md-12 form-group">
-                                    <input type="email" class="form-control" id="name" name="cemail" placeholder="Email" onfocus="this.placeholder = ''" value="${cookie.cemail.value}" onblur="this.placeholder = 'Email'">
+                                    <input type=class="form-control" id="name" name="cemail" placeholder="Email" onfocus="this.placeholder = ''" value="${cookie.cemail.value}" onblur="this.placeholder = 'Email'">
                                 </div>
                                 <div class="col-md-12 form-group">
                                     <input type="password" class="form-control" id="name" name="cpassword" placeholder="Password" onfocus="this.placeholder = ''" value="${cookie.cpass.value}" onblur="this.placeholder = 'Password'">
@@ -95,7 +97,7 @@
                     </div>
                 </div>
             </div>
-        </section>
+      
         <!--================End Login Box Area =================-->
 
 
@@ -114,5 +116,3 @@
         <script src="vendors/jquery.ajaxchimp.min.js"></script>
         <script src="vendors/mail-script.js"></script>
         <script src="js/main.js"></script>
-    </body>
-</html>
