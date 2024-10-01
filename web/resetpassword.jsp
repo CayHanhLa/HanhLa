@@ -26,7 +26,7 @@
                 margin: 1rem;
                 text-align: center;
                 font-weight: 100;
-            }
+            
         </style>
     </head>
     <body>
@@ -47,7 +47,7 @@
                                                 <input name="emailreset" placeholder="Enter Your Email" value="${EmailReset}" type="email" class="code" required> <br>                                              
                                             </div>                                            
                                             <div  style="color: #FFFFFF;">                                      
-                                                ${requestScope.MessageFromReset}
+                                                ${requestScope.MessageFromReset
                                             </div>                                            
                                             <div style="margin-top: 20px; font-size: 25px;">
 

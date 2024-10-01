@@ -30,10 +30,10 @@
         </style>
         <style>
 
-            input[type=number]::-webkit-outer-spin-button,
+            input[tye=number]::-webkit-oute-button,
             input[type=number]::-webkit-inner-spin-button {
-                -webkit-appearance: none;
-                margin: 0;
+                -ebkit-appearance: none;
+                mn: 0;
             }
         </style>
 
@@ -61,7 +61,7 @@
                                                 <input name="number5" type="number" class="code" min="0" max="9" required>
                                                 <input name="number6" type="number" class="code" min="0" max="9" required>
                                             </div>
-                                            <div id="error-message" style="color: #FFFFFF;">                                      
+                                            <div id="error-message" style="color:FFF;">                                      
                                                 ${FailtoVerify}
                                             </div>
                                             <div style="margin-top: 20px;">

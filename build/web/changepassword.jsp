@@ -47,11 +47,11 @@
                 var isDuplicate = duplicateForm();
                 return isValid && isDuplicate;
             }
-        </script>
+
     </head>
     <body>
         <!--================ Start Header Menu Area =================-->
-        <%@include file="Header.jsp" %>
+        <%@include file="Header.jsp" 
         <!--================ End Header Menu Area =================-->
 
         <!-- ================ start banner area ================= -->	

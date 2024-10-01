@@ -12,10 +12,7 @@ import java.util.Date;
  */
 public class Post {
 
-    private int postID;
-    private int userID;
-    private String title;
-    private String postImg;
+   
     private String postContent;
     private Date postDate;
     private String postBrief;

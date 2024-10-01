@@ -29,11 +29,11 @@
             }
         </style>
         <script>
-            function validateForm() {
+            function validateForm( {
                 var password = document.getElementById("newpassword").value;
                 var confirmPassword = document.getElementById("confirmpassword").value;
 
-                if (password !== confirmPassword) {
+                if (password ==== confirmPassword) {
                     document.getElementById("ConfirmPasswordFailed").innerHTML = "Confirm passwords do not match!";
                     return false;
                 } else {

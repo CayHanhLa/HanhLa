@@ -10,7 +10,7 @@ package Model;
  */
 public class Employee extends User {
 
-    private int roleId;
+
 
     public Employee() {
     }

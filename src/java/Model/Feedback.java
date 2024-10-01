@@ -29,16 +29,11 @@ public class Feedback {
     public Feedback() {
     }
 
-    public Feedback(int feedbackID, int productID, int userID, String fullName, String email, String phoneNumber, int rating, String feedbackText, String imageURL, Date feedbackDate) {
+    public Feedback(int feedbackID,  int userID, String fullName, String email, String phoneNumber, int rating, String feedbackText, String imageURL, Date feedbackDate) {
         this.feedbackID = feedbackID;
         this.productID = productID;
         this.userID = userID;
-        this.fullName = fullName;
-        this.email = email;
-        this.phoneNumber = phoneNumber;
-        this.rating = rating;
-        this.feedbackText = feedbackText;
-        this.imageURL = imageURL;
+
         this.feedbackDate = feedbackDate;
     }
 
@@ -50,19 +45,14 @@ public class Feedback {
         this.imageURL = imageURL;
     }
 
-    public Feedback(int feedbackID, int productID, int userID, String fullName, String email, String phoneNumber, int rating, String feedbackText, String imageURL, Date feedbackDate, String userName, String avatar) {
+    public Feedback(int feedbackID, int productID, int userID, String neNumber, int rating, String feedbackText, String imageURL, Date feedbackDate, String userName, String avatar) {
         this.feedbackID = feedbackID;
         this.productID = productID;
         this.userID = userID;
         this.fullName = fullName;
         this.email = email;
         this.phoneNumber = phoneNumber;
-        this.rating = rating;
-        this.feedbackText = feedbackText;
-        this.imageURL = imageURL;
-        this.feedbackDate = feedbackDate;
-        this.userName = userName;
-        this.avatar = avatar;
+        
     }
     
     public int getFeedbackID() {
@@ -77,19 +67,6 @@ public class Feedback {
         return productID;
     }
 
-    public void setProductID(int productID) {
-        this.productID = productID;
-    }
-
-    public int getUserID() {
-        return userID;
-    }
-
-    public void setUserID(int userID) {
-        this.userID = userID;
-    }
-
-    public String getFullName() {
         return fullName;
     }
 

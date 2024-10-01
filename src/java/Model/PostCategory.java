@@ -10,7 +10,6 @@ package Model;
  */
 public class PostCategory {
     private int postCategoryID;
-    private String postCategoryName;
 
     public PostCategory() {
     }

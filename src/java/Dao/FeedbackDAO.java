@@ -67,7 +67,7 @@ public class FeedbackDAO {
             e.printStackTrace();
             System.out.println(e.getMessage());
         }
-        return list;
+        return 0;
     }
 
     public void addFeedback(Feedback feedback) {
@@ -175,7 +175,7 @@ public class FeedbackDAO {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return false;
+        return 0;
     }
 
 }

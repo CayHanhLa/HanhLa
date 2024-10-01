@@ -53,7 +53,7 @@
                                     <ul class="dropdown-menu">
                                         <% 
                                            boolean isUse = (session != null && session.getAttribute("account") != null);                                           
-                                        %>
+                                        
 
                                         <% if (isUse) { %>
                                         <li class="nav-item"><a class="nav-link" href="home">Welcome, ${sessionScope.account.fullName}</a></li>
@@ -61,7 +61,7 @@
                                             <% } else { %>
                                         <li class="nav-item"><a class="nav-link" href="login">Login</a></li>
                                         <li class="nav-item"><a class="nav-link" href="register">Register</a></li>
-                                            <% } %>
+                                            <% } %
                                         <li class="nav-item"><a class="nav-link" href="tracking-order.html">Tracking</a></li>
                                     </ul>
                                 </li>

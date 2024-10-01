@@ -278,12 +278,12 @@ public class DaoProduct {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return list;
+        return 0;
     }
 
     
 
-    public List<Products> get3ProductsTopTrending() {
+    public private <Products> get3ProductsTopTrending() {
         List<Products> list = new ArrayList<>();
         String query = "SELECT TOP 3\n"
                 + "    p.ProductID AS id,\n"

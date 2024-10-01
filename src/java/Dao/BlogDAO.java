@@ -6,11 +6,7 @@ package Dao;
 
 import Constant.Constant;
 import Model.Post;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.List;
+
 
 /**
  *
@@ -42,28 +38,7 @@ public class BlogDAO {
             query += "OFFSET ? ROWS\n"
                     + "FETCH NEXT ? ROWS ONLY;";
         }
-        try {
-            conn = new DBContext().connection;
-            ps = conn.prepareStatement(query);
-            ps.setString(1, txtSearch);
-            ps.setString(2, txtSearch);
-            ps.setInt(3, category);
-            ps.setInt(4, category);
-            if (page != null) {
-                ps.setInt(5, page * Constant.BLOGS_PER_PAGE - Constant.BLOGS_PER_PAGE);
-                ps.setInt(6, Constant.BLOGS_PER_PAGE);
-            }
-            rs = ps.executeQuery();
-            while (rs.next()) {
-                list.add(new Post(rs.getInt("PostID"),
-                        rs.getInt("UserID"),
-                        rs.getString("Title"),
-                        rs.getString("PostImg"),
-                        rs.getString("PostContent"),
-                        rs.getDate("PostDate"),
-                        rs.getString("PostBrief"),
-                        rs.getBoolean("PostFlag"),
-                        rs.getInt("PostCategoryID"),
+
                         rs.getString("FullName"),
                         rs.getString("PostCategoryName")
                 ));
@@ -84,16 +59,7 @@ public class BlogDAO {
                 + "           ELSE E.FullName \n"
                 + "       END AS FullName\n"
                 + "FROM Post P\n"
-                + "LEFT JOIN PostCategory PC ON P.PostCategoryID = PC.PostCategoryID\n"
-                + "LEFT JOIN [User] U ON U.UserID = P.UserID\n"
-                + "LEFT JOIN Customer C ON U.UserID = C.UserID\n"
-                + "LEFT JOIN Employee E ON E.UserID = U.UserID order by P.PostID desc\n";
-        try {
-            conn = new DBContext().connection;
-            ps = conn.prepareStatement(query);
-            rs = ps.executeQuery();
-            while (rs.next()) {
-                list.add(new Post(rs.getInt("PostID"),
+                + "LEFT JOIN PostCategory PC ON P.PostCategoryID = PC.PostCategoryID\n"ID"),
                         rs.getInt("UserID"),
                         rs.getString("Title"),
                         rs.getString("PostImg"),

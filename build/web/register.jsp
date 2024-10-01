@@ -18,7 +18,7 @@
         <link rel="stylesheet" href="css/style.css">
         <style>
             .large-select {
-                width: 100%;
+                width: 100%%%;
                 height: 50px;
                 font-size: 16px;
                 text-align: center;
@@ -71,7 +71,7 @@
                                 <div class="col-md-12 form-group">
                                     <input type="email" class="form-control" id="email" name="email" value="${requestScope.email}" placeholder="Email" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Email'">
                                 </div>
-                                <div style="color: #4B5CED;">
+                                <div style="color: #4;">
                                     ${ErrorEmail}
                                 </div>
                                 <div class="col-md-12 form-group">
