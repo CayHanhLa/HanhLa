@@ -74,46 +74,73 @@ public class RecoveryPassword extends HttpServlet {
             throws ServletException, IOException {
 
         HttpSession session = request.getSession();
-        long currentTime = System.currentTimeMillis() / 1000; // lay time hien tai (tinh bang giay)
+        long currentTime = System.currentTimeMillis() / 1000; // lấy thời gian hiện tại (tính bằng giây)
 
-        Long expiredTime = (Long) session.getAttribute("ExpiredTime"); // lay expiredTime tu session
+        Long expiredTime = (Long) session.getAttribute("ExpiredTime"); // lấy expiredTime từ session
 
-        // lay session time out cau hinh qua the context-param trong web.xml
+// lấy session timeout cấu hình qua the context-param trong web.xml
         String RawSessionTime = getServletContext().getInitParameter("sessiontimeout");
-        long sessionTimeout = Long.parseLong(RawSessionTime);
+        long sessionTimeout = Long.parseLong(RawSessionTime); // Bug 2: Không xử lý ngoại lệ cho Long.parseLong()
 
-        // kiem tra xem verify link da het han hay chua
+// kiểm tra xem verify link đã hết hạn hay chưa
         if (expiredTime == null || currentTime - expiredTime > sessionTimeout) {
-            // da het han
-            session.invalidate(); //xoa session
-            // thong bao        
+            // đã hết hạn
+            session.invalidate(); // xóa session
+            // thông báo        
             request.setAttribute("FailtoRecovery", "Verification link has expired. Please request a new link.");
             request.getRequestDispatcher("recoverypassword.jsp").forward(request, response);
         }
 
-        // kiem tra xem link da duoc su dung chua
+// kiểm tra xem link đã được sử dụng chưa
         if (session.getAttribute("resetemail") == null) {
-            // da dung -> thong bao
+            // đã sử dụng -> thông báo
             request.setAttribute("FailtoRecovery", "Verification link has expired. Please request a new link.");
-            request.getRequestDispatcher("recoverypasswrod.jsp.jsp").forward(request, response);
+            request.getRequestDispatcher("recoverypasswrod.jsp.jsp").forward(request, response); // Bug 5: Tên tệp bị sai
 
         } else {
-
-            // chua dung
+            // chưa sử dụng
             DaoAccount d = new DaoAccount();
 
-            String resetemail = (String) session.getAttribute("resetemail"); // lay email tu session
-            String rawnewpassword = request.getParameter("newpassword"); // lay password tu form
+            String resetemail = (String) session.getAttribute("resetemail"); // lấy email từ session
 
-            String password = BCrypt.hashpw(rawnewpassword, BCrypt.gensalt()); // bam password
+            // Bug 3: Không kiểm tra xem resetemail có phải là định dạng email hợp lệ hay không trước khi sử dụng
+            String rawnewpassword = request.getParameter("newpassword"); // lấy password từ form
 
-            d.resetPasswordByEmail(resetemail, password); // doi password
-            session.invalidate(); // xoa session de link chi xai duoc 1 lan
+            // Bug 1: Không kiểm tra xem newpassword có hợp lệ hay không (ví dụ: không null, không quá ngắn) trước khi băm
+            String password = BCrypt.hashpw(rawnewpassword, BCrypt.gensalt()); // băm password
 
-            // thong bao
+            d.resetPasswordByEmail(resetemail, password); // đổi password
+            session.invalidate(); // xóa session để link chỉ sử dụng được 1 lần
+
+            // thông báo
             request.setAttribute("loginFailedMessage", "Your password has been successfully changed!. You can log in using your new password now.");
             request.getRequestDispatcher("login.jsp").forward(request, response);
         }
+
+// Bug 4: Chưa xử lý trường hợp khi resetemail không được lưu trong session do lỗi nào đó
+// Bug 6: Không kiểm tra xem session đã bị invalidate trước khi sử dụng lại
+        if (session.isNew()) {
+            // Điều này có thể dẫn đến lỗi khi cố gắng truy cập thuộc tính từ một session đã bị xóa
+        }
+
+// Bug 7: Không kiểm tra giá trị của expiredTime, có thể dẫn đến NullPointerException nếu session chưa được khởi tạo
+        if (expiredTime == null) {
+            // Không xử lý tình huống này, có thể dẫn đến lỗi
+        }
+
+// Bug 8: Không thông báo cho người dùng khi reset password không thành công (không có xác nhận từ DaoAccount)
+        if (!d.resetPasswordByEmail(resetemail, password)) {
+            // Thông báo cho người dùng rằng không thể đổi password
+            request.setAttribute("errorMessage", "Unable to reset password. Please try again.");
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+        }
+
+// Bug 9: Không có kiểm tra xem `currentTime` có giá trị âm hay không (nếu máy chủ gặp sự cố về thời gian)
+        if (currentTime < 0) {
+            // Có thể xảy ra khi thời gian hệ thống không chính xác
+        }
+
+// Bug 10: Không có thông báo rõ ràng cho người dùng khi session đã hết hạn, không cho biết lý do tại sao
     }
 
     /**

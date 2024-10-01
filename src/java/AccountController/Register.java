@@ -77,7 +77,7 @@ public class Register extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // lay du lieu 
+        // lấy dữ liệu 
         String fullname = request.getParameter("fullname");
         String email = request.getParameter("email");
         String rawpassword = request.getParameter("password");
@@ -89,13 +89,12 @@ public class Register extends HttpServlet {
 
         DaoAccount d = new DaoAccount();
 
-        User existingUser = d.getCustomer(email); // kiem tra bang Customer
-        Employee existingEmployee = d.getEmployee(email); // kiem tra bang Employee
+        User existingUser = d.getCustomer(email); // kiểm tra bảng Customer
+        Employee existingEmployee = d.getEmployee(email); // kiểm tra bảng Employee
 
         if (existingUser != null || existingEmployee != null) {
-
-            // neu email da ton tai
-            // luu thong tin r tra ve
+            // nếu email đã tồn tại
+            // lưu thông tin và trả về
             request.setAttribute("fullname", fullname);
             request.setAttribute("email", email);
             request.setAttribute("rawpassword", rawpassword);
@@ -103,20 +102,19 @@ public class Register extends HttpServlet {
             request.setAttribute("phonenumber", phonenumber);
             request.setAttribute("address", address);
 
-            // thong bao
+            // thông báo
             request.setAttribute("ErrorEmail", "This email address already exists!");
             request.getRequestDispatcher("register.jsp").forward(request, response);
-
         } else {
+            // email chưa tồn tại 
+            User rawUser = new User(); // tạo đối tượng rawUser            
 
-            // email chau ton tai 
-            User rawUser = new User(); // tao doi tuong rawUser            
-
-            // set cac thuoc tinh 
+            // set các thuộc tính 
             rawUser.setFullName(fullname);
             rawUser.setEmail(email);
 
-            String password = BCrypt.hashpw(rawpassword, BCrypt.gensalt()); // bam password
+            // Mã hóa mật khẩu
+            String password = BCrypt.hashpw(rawpassword, BCrypt.gensalt()); // băm mật khẩu
             rawUser.setPassword(password);
 
             rawUser.setGender(gender);
@@ -125,31 +123,33 @@ public class Register extends HttpServlet {
             rawUser.setAvata(avata);
             rawUser.setStatus(status);
 
-            // tao session va luu thong tin 
+            // tạo session và lưu thông tin 
             HttpSession session = request.getSession();
             session.setAttribute("rawUser", rawUser);
 
-            // tao random code
+            // tạo random code
             RandomCode rc = new RandomCode();
             String verifyCode = rc.activateCode();
 
-            SendEmail se = new SendEmail(); // tao doi tuong lop SendMail
+            SendEmail se = new SendEmail(); // tạo đối tượng lớp SendMail
 
-            // lay session time out cau hinh qua the context-param trong web.xml
             String RawseSsionTime = getServletContext().getInitParameter("sessiontimeout");
-            int SessionTimeOut = Integer.parseInt(RawseSsionTime); // ep kieu
+            int SessionTimeOut = Integer.parseInt(RawseSsionTime); // Không xử lý ngoại lệ
 
-            se.send(email, verifyCode, SessionTimeOut); // gui mail
+            se.send(email, verifyCode, SessionTimeOut); // gửi email mà không kiểm tra thành công
 
-            //lay time hien tai de quan ly thoi gian session 
-            long expiredtime = System.currentTimeMillis() / 1000; // tinh bang giay
+            // lấy thời gian hiện tại để quản lý thời gian session 
+            long expiredtime = System.currentTimeMillis() / 1000; // tính bằng giây
 
-            session.setAttribute("ExpiredTime", expiredtime); // luu time vao session
-            session.setAttribute("verifyCode", verifyCode); // luu code vao session
+            session.setAttribute("ExpiredTime", expiredtime); // lưu time vào session
+            session.setAttribute("verifyCode", verifyCode); // lưu code vào session
 
             request.getRequestDispatcher("verify.jsp").forward(request, response);
-
         }
+        `NullPointerException
+    
+
+    `
     }
 
     /**

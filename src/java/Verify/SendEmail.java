@@ -8,18 +8,17 @@ public class SendEmail {
 
     public void send(String toEmail, String verifyCode, int SessinTimeOut) {
         //cau hinh mail nguoi gui
-        String fromEmail = "huangquan2208@gmail.com";
-        String fromPassword = "kfiugmgourrqycpp";
+        String fromEmail ;
+        String fromPassword ;
 
         //thiet lap ket noi
-        String host = "smtp.gmail.com";
+
         //cau hinh mail server
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.starttls.enable", "true");
         props.put("mail.smtp.host", host);
         props.put("mail.smtp.port", "587");
-        props.put("mail.smtp.ssl.protocols", "TLSv1.2");
         props.put("mail.smtp.ssl.trust", "smtp.gmail.com");
 
         //tao phien
@@ -102,7 +101,7 @@ public class SendEmail {
                     + "                <h5 style=\"margin: 0;\">Questions? <a href=\"#\" style=\"color: #4B5CED; text-decoration: none;\">We're here to help</a></h5>\n"
                     + "            </div>\n"
                     + "        </div>",
-                    "text/html");
+                    +);
 
             //gui email
             Transport.send(message);

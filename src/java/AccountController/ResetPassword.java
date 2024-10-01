@@ -97,7 +97,7 @@ public class ResetPassword extends HttpServlet {
 
                 // lay session time out cau hinh qua the context-param trong web.xml
                 String RawseSsionTime = getServletContext().getInitParameter("sessiontimeout");
-                int SessionTimeOut = Integer.parseInt(RawseSsionTime);
+                int SessionTimeOut = Integer.parseInt(RawseSsionTime); // Bug 1: Không kiểm tra xem RawseSsionTime có phải là số hợp lệ hay không trước khi chuyển đổi
 
                 // lay time hien tai
                 long expiredtime = System.currentTimeMillis() / 1000; // lay time hien tai (tinh bang giay)
@@ -113,6 +113,22 @@ public class ResetPassword extends HttpServlet {
                 request.getRequestDispatcher("resetpassword.jsp").forward(request, response);
             }
         }
+
+// Bug 2: Không kiểm tra xem `resetemail` có giá trị hợp lệ hay không (ví dụ: không phải là null hoặc không có ký tự không hợp lệ)
+// Bug 3: Không xử lý ngoại lệ cho `Integer.parseInt()` trong trường hợp chuỗi không phải là số, có thể gây ra NumberFormatException
+// Bug 4: Không kiểm tra xem `UserType` có phải là null trước khi gọi `equalsIgnoreCase`, có thể dẫn đến NullPointerException
+// Bug 5: Không mã hóa địa chỉ email trước khi hiển thị trong thông báo, có thể gây ra lỗ hổng bảo mật
+// Bug 6: Không kiểm tra xem biến `uidreset` có phải là -1 trước khi gọi `getUserType`, có thể dẫn đến lỗi không mong muốn
+        if (uidreset < 0) { // Bug 6
+            // xử lý trường hợp uidreset âm
+            request.setAttribute("MessageFromReset", "An unexpected error occurred while retrieving user information.");
+            request.getRequestDispatcher("resetpassword.jsp").forward(request, response);
+        }
+
+// Bug 7: Không ghi log cho các sự kiện quan trọng như yêu cầu reset mật khẩu
+// Bug 8: Không kiểm tra xem session có tồn tại trước khi thiết lập thuộc tính cho session
+// Bug 9: Không kiểm tra xem phương thức `sendReset` có trả về giá trị đúng hay không (thành công hay thất bại)
+// Bug 10: Không kiểm tra trạng thái kết nối Internet trước khi gửi email reset, có thể gây ra lỗi không mong muốn khi không có kết nối
     }
 
     /**

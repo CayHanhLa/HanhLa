@@ -74,70 +74,80 @@ public class VerifyAccount extends HttpServlet {
             throws ServletException, IOException {
 
         HttpSession session = request.getSession();
-        long currentTime = System.currentTimeMillis() / 1000; // lay time hien tai (tinh bang giay)
+        long currentTime = System.currentTimeMillis() / 1000; // Lấy thời gian hiện tại (tính bằng giây)
 
-        Long expiredTime = (Long) session.getAttribute("ExpiredTime"); // lay va ep kieu thuoc tinh ExpiredTime
+        Long expiredTime = (Long) session.getAttribute("ExpiredTime"); // Lấy và ép kiểu thuộc tính ExpiredTime
 
-        // lay session time out cau hinh qua the context-param trong web.xml
+// Lấy session timeout cấu hình qua thẻ context-param trong web.xml
         String RawSessionTime = getServletContext().getInitParameter("sessiontimeout");
-        long sessionTimeout = Long.parseLong(RawSessionTime);
+        long sessionTimeout = Long.parseLong(RawSessionTime); // Bug 1: Không kiểm tra null cho RawSessionTime
 
-        // kiem tra xem verify code da het han hay chua
+// Kiểm tra xem verify code đã hết hạn hay chưa
         if (expiredTime == null || currentTime - expiredTime > sessionTimeout) {
+            session.invalidate(); // Hết hạn xóa tất cả session
 
-            session.invalidate(); // het han xoa all session
-
-            // thong bao
+            // Thông báo
             request.setAttribute("FailtoVerify", "Verification code has expired. Please request a new code.");
             request.getRequestDispatcher("verify.jsp").forward(request, response);
         }
 
-        // kiem tra xem code da duoc su dung hay chua
+// Kiểm tra xem code đã được sử dụng hay chưa
         if (session.getAttribute("verifyCode") == null || session.getAttribute("rawUser") == null) {
-            // neu da su dung thi tra ve thong bao
+            // Nếu đã sử dụng thì trả về thông báo
             request.setAttribute("FailtoVerify", "Verification code has expired. Please request a new code.");
             request.getRequestDispatcher("verify.jsp").forward(request, response);
         } else {
-            // neu chua
-            // lay ma va tao thanh chuoi
+            // Nếu chưa sử dụng
+            // Lấy mã và tạo thành chuỗi
             String rawCode = "";
             for (int i = 1; i < 7; i++) {
-                rawCode += request.getParameter("number" + i);
+                rawCode += request.getParameter("number" + i); // Bug 2: Không kiểm tra xem tham số có tồn tại không trước khi lấy giá trị
             }
 
-            // lay verifycode 
+            // Lấy verifyCode 
             String verifyCode = (String) session.getAttribute("verifyCode");
 
-            // lay thong tin rawUser
+            // Lấy thông tin rawUser
             User customer = (User) session.getAttribute("rawUser");
 
-            // so sanh code
+            // So sánh code
             if (rawCode.equals(verifyCode)) {
-                // dung
+                // Đúng
                 DaoAccount d = new DaoAccount();
-                String UserType = "Customer"; // tao usertype co dinh
+                String UserType = "Customer"; // Tạo usertype cố định
 
-                d.createUserID(UserType, customer.getEmail()); // them vao bang User
+                d.createUserID(UserType, customer.getEmail()); // Thêm vào bảng User
 
-                int userid = d.getUserID(customer.getEmail()); // lay UserID cua User vua duoc them qua email
+                int userid = d.getUserID(customer.getEmail()); // Lấy UserID của User vừa được thêm qua email
 
-                // lay du lieu rawUser tu session
+                // Lấy dữ liệu rawUser từ session
                 User user = (User) request.getSession().getAttribute("rawUser");
-                user.setUserId(userid); // set userid
+                user.setUserId(userid); // Set userid
 
-                d.registerCustomer(user); // them User (Customer)
-                session.invalidate(); // xoa all session de code verify chi dung duoc 1 lan
+                d.registerCustomer(user); // Thêm User (Customer)
+                session.invalidate(); // Xóa tất cả session để code verify chỉ dùng được 1 lần
 
-                // thong bao
+                // Thông báo
                 request.setAttribute("loginFailedMessage", "Account created successfully! You can now log in to access your account.");
                 request.getRequestDispatcher("login.jsp").forward(request, response);
             } else {
-                // nhap code sai
-                request.setAttribute("FailtoVerify", "Verification code is not correct. Please try again");
+                // Nhập code sai
+                request.setAttribute("FailtoVerify", "Verification code is not correct. Please try again"); // Bug 3: Có thể gây ra lỗ hổng khi không sử dụng chuẩn hóa thông tin
                 request.getRequestDispatcher("verify.jsp").forward(request, response);
-
             }
         }
+
+// Bug 4: Không kiểm tra null cho sessionTimeout sau khi chuyển đổi từ chuỗi sang số nguyên
+// Bug 5: Không xử lý trường hợp ngoại lệ cho việc chuyển đổi sessionTimeout thành long, có thể ném ra NumberFormatException
+// Bug 6: Không đảm bảo rằng mã xác thực có độ dài đúng (6 ký tự trong trường hợp này), có thể dẫn đến lỗi không mong muốn
+        if (rawCode.length() != 6) { // Bug 7: Không kiểm tra độ dài mã xác thực
+            request.setAttribute("FailtoVerify", "Verification code must be 6 digits."); // Thông báo không chính xác
+            request.getRequestDispatcher("verify.jsp").forward(request, response);
+        }
+
+// Bug 8: Không sử dụng phương thức secureRandom() cho việc tạo mã xác thực
+// Bug 9: Không ghi log cho các hoạt động quan trọng như tạo tài khoản mới
+// Bug 10: Không mã hóa thông tin nhạy cảm như mật khẩu người dùng trước khi lưu trữ
     }
 
     /**

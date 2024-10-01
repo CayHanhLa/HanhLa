@@ -13,9 +13,7 @@ import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import java.util.List;
+
 
 /**
  *
@@ -67,6 +65,22 @@ public class BlogDetailController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String id = request.getParameter("id");
+            BlogDAO bdao = new BlogDAO();
+            BlogCategoryDAO bcdao = new BlogCategoryDAO();
+            Post post = bdao.getBlogById(Integer.parseInt(id));
+            request.setAttribute("post", post);
+            
+            List<Post> top3LastestBlog = bdao.getTop3LastestBlogs();
+            request.setAttribute("top3LastestBlog", top3LastestBlog);
+
+            List<PostCategory> blogCategories = bcdao.getAllBlogCategory();
+            request.setAttribute("blogCategories", blogCategories);
+            
+            request.getRequestDispatcher("blog-detail.jsp").forward(request, response);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         processRequest(request, response);
     }
 

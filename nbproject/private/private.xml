@@ -2,6 +2,24 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/C:/Users/Anh%20Tuan/Documents/NetBeansProjects/HanhLa/src/java/Verify/RandomCode.java</file>
+            <file>file:/C:/Users/Anh%20Tuan/Documents/NetBeansProjects/HanhLa/web/WEB-INF/web.xml</file>
+            <file>file:/C:/Users/Anh%20Tuan/Documents/NetBeansProjects/HanhLa/src/java/Dao/DaoProduct.java</file>
+            <file>file:/C:/Users/Anh%20Tuan/Documents/NetBeansProjects/HanhLa/src/java/Verify/SendReset.java</file>
+            <file>file:/C:/Users/Anh%20Tuan/Documents/NetBeansProjects/HanhLa/src/java/AccountController/RecoveryPassword.java</file>
+            <file>file:/C:/Users/Anh%20Tuan/Documents/NetBeansProjects/HanhLa/src/java/Dao/DaoAccount.java</file>
+            <file>file:/C:/Users/Anh%20Tuan/Documents/NetBeansProjects/HanhLa/src/java/Dao/BlogCategoryDAO.java</file>
+            <file>file:/C:/Users/Anh%20Tuan/Documents/NetBeansProjects/HanhLa/src/java/AccountController/ResetPassword.java</file>
+            <file>file:/C:/Users/Anh%20Tuan/Documents/NetBeansProjects/HanhLa/src/java/Controller/BlogDetailController.java</file>
+            <file>file:/C:/Users/Anh%20Tuan/Documents/NetBeansProjects/HanhLa/src/java/AccountController/VerifyAccount.java</file>
+            <file>file:/C:/Users/Anh%20Tuan/Documents/NetBeansProjects/HanhLa/src/java/AccountController/Register.java</file>
+            <file>file:/C:/Users/Anh%20Tuan/Documents/NetBeansProjects/HanhLa/src/java/Constant/Constant.java</file>
+            <file>file:/C:/Users/Anh%20Tuan/Documents/NetBeansProjects/HanhLa/web/META-INF/context.xml</file>
+            <file>file:/C:/Users/Anh%20Tuan/Documents/NetBeansProjects/HanhLa/src/java/AccountController/Login.java</file>
+            <file>file:/C:/Users/Anh%20Tuan/Documents/NetBeansProjects/HanhLa/src/java/AccountController/ChangePassword.java</file>
+            <file>file:/C:/Users/Anh%20Tuan/Documents/NetBeansProjects/HanhLa/web/changepassword.jsp</file>
+            <file>file:/C:/Users/Anh%20Tuan/Documents/NetBeansProjects/HanhLa/src/java/Verify/SendEmail.java</file>
+        </group>
     </open-files>
 </project-private>

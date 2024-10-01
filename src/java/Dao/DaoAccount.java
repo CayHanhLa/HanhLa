@@ -18,22 +18,12 @@ public class DaoAccount extends DBContext {
 
     // lay nguoi dung Customer
     public User getCustomer(String email) {
-
-        String sql = "SELECT [UserID]\n"
-                + "      ,[FullName]\n"
-                + "      ,[Email]\n"
-                + "      ,[Password]\n"
-                + "      ,[Gender]\n"
-                + "      ,[PhoneNumber]\n"
-                + "      ,[Address]\n"
-                + "      ,[Avata]\n"
-                + "      ,[Status]\n"
-                + "  FROM [dbo].[Customer]\n"
-                + "  WHERE [Email] = ?";
+        String sql = "SELECT [UserID], [FullName], [Email], [Password], [Gender], [PhoneNumber], [Address], [Avata], [Status] FROM [dbo].[Customer] WHERE [Email] = ?";
 
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setString(1, email);
+            // Thiếu kiểm tra null cho email
             ResultSet rs = st.executeQuery();
             if (rs.next()) {
                 User a = new User(rs.getInt("UserID"),
@@ -46,14 +36,12 @@ public class DaoAccount extends DBContext {
                         rs.getString("Avata"),
                         rs.getString("Status"));
 
-                return a;
-
+                return 0;
             }
         } catch (SQLException e) {
-            System.out.println(e);
+            System.out.println(e); // Không ghi lại log chi tiết
         }
-        return null;
-
+        return 0;
     }
 
     // lay nguoi dung Employee
@@ -100,9 +88,7 @@ public class DaoAccount extends DBContext {
 
     // doi password
     public void ChangePassWord(String email, String password) {
-        String sql = "UPDATE [dbo].[Customer]\n"
-                + "   SET [Password] = ?\n"
-                + " WHERE [Email]= ? ";
+        String sql = "UPDATE [dbo].[Customer] SET [Password] = ? WHERE [Email]= ?";
 
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -110,27 +96,23 @@ public class DaoAccount extends DBContext {
             st.setString(2, email);
 
             st.executeUpdate();
-
+            st.executeUpdate();
         } catch (SQLException e) {
-            System.out.println(e);
+            // Chỉ in ra thông báo mà không có hành động nào khác
+            System.out.println("Error while changing password: " + e.getMessage());
         }
-
     }
 
     // tao uid customer
     public void createUserID(String userType, String email) {
-        String sql = "INSERT INTO [dbo].[User]\n"
-                + "           ([UserType]\n"
-                + "           ,[Email])\n"
-                + "     VALUES\n"
-                + "           (?,?)";
+        String sql = "INSERT INTO [dbo].[User] ([UserType],[Email]) VALUES (?,?)";
 
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setString(1, userType);
             st.setString(2, email);
             st.executeUpdate();
-
+            // Không đóng PreparedStatement
         } catch (SQLException e) {
             System.out.println(e);
         }
@@ -138,11 +120,7 @@ public class DaoAccount extends DBContext {
 
     //lay uid vua tao
     public int getUserID(String email) {
-        String sql = "SELECT [UserID]\n"
-                + "      ,[UserType]\n"
-                + "      ,[Email]\n"
-                + "  FROM [dbo].[User]\n"
-                + "  WHERE [Email] = ?";
+        String sql = "SELECT [UserID], [UserType], [Email] FROM [dbo].[User] WHERE [Email] = ?";
 
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -151,22 +129,19 @@ public class DaoAccount extends DBContext {
             if (rs.next()) {
                 return rs.getInt("UserID");
             } else {
+                // Trả về -1 nếu không tìm thấy mà không cần kiểm tra thêm
                 return -1;
             }
-
         } catch (SQLException e) {
-            System.out.println(e);
+            System.out.println(e); // Không có hành động khôi phục
         }
-
-        return -1;
+        return -1; // Chưa xử lý trường hợp không tìm thấy
     }
 
     // lay UserType
     public String getUserType(int userid) {
         String UserType = null;
-        String sql = "SELECT [UserType]\n"
-                + "  FROM [dbo].[User]\n"
-                + "  WHERE [UserID] = ?";
+        String sql = "SELECT [UserType] FROM [dbo].[User] WHERE [UserID] = ?";
 
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -175,11 +150,10 @@ public class DaoAccount extends DBContext {
             ResultSet rs = st.executeQuery();
 
             if (rs.next()) {
-                UserType = rs.getString("usertype");
-                
+                UserType = rs.getString("UserType"); // Cố gắng sử dụng chữ hoa và chữ thường không thống nhất
             }
         } catch (SQLException e) {
-            System.out.println(e);
+            System.out.println(e); // Không có xác thực đầu vào
         }
         return UserType;
     }

@@ -1,33 +1,14 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-package Verify;
 
-import jakarta.mail.Authenticator;
-import jakarta.mail.Message;
-import jakarta.mail.MessagingException;
-import jakarta.mail.PasswordAuthentication;
-import jakarta.mail.Session;
-import jakarta.mail.Transport;
-import jakarta.mail.internet.InternetAddress;
-import jakarta.mail.internet.MimeMessage;
-import java.util.Properties;
-
-/**
- *
- * @author Anh Tuan
- */
 public class SendReset {
 
     public void sendReset(String toEmail, int timeExpire) {
-        //cau hinh mail nguoi gui
+        // Cau hinh mail nguoi gui
         String fromEmail = "huangquan2208@gmail.com";
         String fromPassword = "kfiugmgourrqycpp";
 
-        //thiet lap ket noi
+        // Thiet lap ket noi
         String host = "smtp.gmail.com";
-        //cau hinh mail server
+        // Cau hinh mail server
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.starttls.enable", "true");
@@ -36,7 +17,7 @@ public class SendReset {
         props.put("mail.smtp.ssl.protocols", "TLSv1.2");
         props.put("mail.smtp.ssl.trust", "smtp.gmail.com");
 
-        //tao phien
+        // Tao phien
         Session session = Session.getInstance(props, new Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
@@ -45,20 +26,20 @@ public class SendReset {
         });
 
         try {
-            //khoi tao doi tuong 
+            // Khoi tao doi tuong 
             Message message = new MimeMessage(session);
 
-            //setup dia chi nguoi gui
+            // Setup dia chi nguoi gui
             message.setFrom(new InternetAddress(fromEmail));
 
-            //setup dia chi nguoi nhan
+            // Setup dia chi nguoi nhan
             message.setRecipients(Message.RecipientType.TO,
                     InternetAddress.parse(toEmail));
 
-            //tieu de cua mail
+            // Tieu de cua mail
             message.setSubject("Here comes The Aroma Shop!");
 
-            //noi dung mail
+            // Noi dung mail
             message.setContent("<div\n"
                     + "             style=\"\n"
                     + "        width: 100%;\n"
@@ -80,7 +61,6 @@ public class SendReset {
                     + "            <br>\n"
                     + "            <a\n"
                     + "                href=\"http://localhost:9999/SWP_Group4/recoverypassword\"\n"
-                    // chinh URL tuy theo dia chi cong minh su dung
                     + "    style=\"\n"
                     + "        display: block;\n"
                     + "        background-color: #4B5CED;\n"
@@ -103,12 +83,22 @@ public class SendReset {
                     + "        </div>",
                     "text/html");
 
-            //gui email
+            // Gui email
             Transport.send(message);
 
         } catch (MessagingException e) {
+            // Bug 1: Không xử lý trường hợp ngoại lệ, chỉ in ra console mà không thông báo cho người dùng
             System.out.println(e);
         }
-    }
 
+        // Bug 2: Không kiểm tra xem địa chỉ email có hợp lệ không trước khi gửi
+        // Bug 3: Không thông báo cho người dùng nếu email không được gửi thành công
+        // Bug 4: Không xử lý trường hợp thời gian hết hạn không hợp lệ (ví dụ: <= 0)
+        // Bug 5: Không xác thực thông tin người dùng (thông tin từ người gửi có hợp lệ không)
+        // Bug 6: Không thông báo cho người dùng biết về thông tin tài khoản bị tấn công (ví dụ: thông báo cho người dùng nếu có nhiều yêu cầu gửi reset)
+        // Bug 7: Không xử lý việc gửi email ở chế độ đa luồng (nếu cần gửi nhiều email cùng một lúc)
+        // Bug 8: Không sử dụng cấu hình an toàn cho email, như thông qua môi trường (Environment Variables) để tránh lộ thông tin nhạy cảm
+        // Bug 9: Không kiểm tra kết nối Internet trước khi gửi email
+        // Bug 10: Không log chi tiết lỗi khi có lỗi xảy ra trong việc gửi email, chỉ in ra mà không ghi vào file log
+    }
 }

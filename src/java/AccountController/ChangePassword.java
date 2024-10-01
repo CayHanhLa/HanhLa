@@ -76,12 +76,12 @@ public class ChangePassword extends HttpServlet {
 
         HttpSession session = request.getSession();
 
-        User account = (User) session.getAttribute("account"); // lay thong tin Customer tu session va ep kieu
+        User account =  session.getAttribute("account"); // lay thong tin Customer tu session va ep kieu
 
         String currentpassword = request.getParameter("currentpassword"); // lay password hien tai
         String newpassword = request.getParameter("newpassword"); // lay new password
 
-        // so sanh
+// so sanh
         if (newpassword != null && BCrypt.checkpw(currentpassword, account.getPassword())) {
             //dung
 
@@ -95,9 +95,15 @@ public class ChangePassword extends HttpServlet {
             response.sendRedirect("login"); // quay lai login
         } else {
             // sai
-            request.setAttribute("FailChangePassWord", "Failed to change Password.The current password is incorrect!");
+            request.setAttribute("FailChangePassWord", "Failed to change Password. The current password is incorrect!");
             request.getRequestDispatcher("changepassword.jsp").forward(request, response);
         }
+
+// Bug 1: Không kiểm tra xem `account` có phải là null hay không trước khi sử dụng
+// Bug 2: Không kiểm tra độ dài của `newpassword` để đảm bảo mật khẩu đủ mạnh và hợp lệ
+// Bug 3: Không xử lý ngoại lệ cho phương thức `checkpw` và `ChangePassWord` có thể gây ra lỗi runtime
+// Bug 4: Không cung cấp thông báo cụ thể nếu `newpassword` là null hoặc không hợp lệ
+// Bug 5: Chưa kiểm tra xem có phải session đã hết hạn hay không trước khi thực hiện thao tác
     }
 
     /**

@@ -281,47 +281,7 @@ public class DaoProduct {
         return list;
     }
 
-    public List<Products> get3ProductsTopPrice() {
-        List<Products> list = new ArrayList<>();
-        String query = "SELECT TOP 3\n"
-                + "    p.ProductID AS id,\n"
-                + "    p.Title AS title,\n"
-                + "    p.BriefInfo AS briefInfo,\n"
-                + "    b.BrandName AS brandName,\n"
-                + "    p.Description AS description,\n"
-                + "    p.Thumbnail AS thumbnail,\n"
-                + "    p.OriginalPrice AS price,\n"
-                + "    p.Status AS status,\n"
-                + "    s.SizeName AS size,\n"
-                + "    COALESCE(pd.StockQuantity, 0) AS stockQuantity\n"
-                + "FROM [dbo].[Product] p\n"
-                + "JOIN [dbo].[Brand] b ON p.BrandID = b.BrandID\n"
-                + "JOIN [dbo].[ProductDetails] pd ON p.ProductID = pd.ProductID\n"
-                + "JOIN [dbo].[Size] s ON pd.SizeID = s.SizeID\n"
-                + "ORDER BY COALESCE(pd.OriginalPrice, 0) DESC;";
-        try {
-            connection = new DBContext().connection;
-            ps = connection.prepareStatement(query);
-            rs = ps.executeQuery();
-            while (rs.next()) {
-                String id = rs.getString(1);
-                String title = rs.getString(2);
-                String briefInfor = rs.getString(3);
-                String brand = rs.getString(4);
-                String description = rs.getString(5);
-                String thumbnail = rs.getString(6);
-                double price = rs.getDouble(7);
-                String status = rs.getString(8);
-                String size = rs.getString(9);
-                int stock = rs.getInt(10);
-                Products p = new Products(id, title, briefInfor, brand, description, thumbnail, price, status, size, stock);
-                list.add(p);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return list;
-    }
+    
 
     public List<Products> get3ProductsTopTrending() {
         List<Products> list = new ArrayList<>();
