@@ -18,7 +18,7 @@ import jakarta.servlet.http.HttpSession;
  *
  * @author Anh Tuan
  */
-public class VerifyAccount extends HttpServlet {
+public class VerifyAccount extends HttpServlet 
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -143,7 +143,7 @@ public class VerifyAccount extends HttpServlet {
         if (rawCode.length() != 6) { // Bug 7: Không kiểm tra độ dài mã xác thực
             request.setAttribute("FailtoVerify", "Verification code must be 6 digits."); // Thông báo không chính xác
             request.getRequestDispatcher("verify.jsp").forward(request, response);
-        }
+        
 
 // Bug 8: Không sử dụng phương thức secureRandom() cho việc tạo mã xác thực
 // Bug 9: Không ghi log cho các hoạt động quan trọng như tạo tài khoản mới
